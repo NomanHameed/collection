@@ -53,7 +53,10 @@
             <ul>
                 @foreach($activecustomer as $active)
                     <li>
-                        {{ 'Name: '. $active->name . ' Email: '. $active->email }}
+                        {{ 'Name: '. $active->name }}
+                        <span class="text-muted">
+                            (Company: {{ $active->company->name }})
+                        </span>
                     </li>
                 @endforeach
             </ul>
@@ -63,11 +66,23 @@
             <ul>
                 @foreach($inactivecustomer as $inactive)
                     <li>
-                        {{ 'Name: '. $inactive->name . ' Email: '. $inactive->email }}
+                        {{ 'Name: '. $inactive->name }} <span class="text-muted">
+                            (Company: {{ $inactive->company->name }})
+                        </span>
                     </li>
                 @endforeach
             </ul>
         </div>
     </div>
-
+    <hr>
+    <div class="row">
+        <div class="col-12">
+            @foreach($companies as $company)
+                <h3>{{ $company->name }}</h3>
+                    @foreach($company->customers as $customer)
+                        <ul>{{ $customer->name }}</ul>
+                    @endforeach
+            @endforeach
+        </div>
+    </div>
 @endsection()
