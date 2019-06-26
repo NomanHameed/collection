@@ -8,12 +8,20 @@ use Illuminate\Http\Request;
 
 class CustomersController extends Controller
 {
-    //
-    public function list(){
-        $activecustomer= Customer::where('active',1)->get();
-        $inactivecustomer= Customer::where('active',0)->get();
+
+
+    public function index(){
+//        $activecustomer= Customer::where('active',1)->get();
+//        $inactivecustomer= Customer::where('active',0)->get();
+        $customers=Customer::all();
+        return view('customers.index', compact('customers'));
+
+    }
+    public function create(){
+
         $companies=Company::all();
-        return view('customers', compact('activecustomer','inactivecustomer','companies'));
+        return view('customers/create',compact('companies'));
+
     }
     public function store(){
 //        dd(request());
@@ -24,6 +32,27 @@ class CustomersController extends Controller
                 'company_id'=>'required'
             ]);
             Customer::create($data);
-            return back();
+            return redirect('customers');
+    }
+
+    public function show(Customer $customer){
+//        $customer = Customer::find($customer);
+
+        return view('customers.show',compact('customer'));
+    }
+
+    public function edit(Customer $customer){
+        $companies= Company::all();
+        return view('customers/edit',compact('customer','companies'));
+    }
+
+    public function update(Customer $customer){
+            $data= request()->validate([
+                'name' => 'required',
+                'email'=> 'required|email'
+            ]);
+
+            $customer->update($data);
+            redirect('customers/'.$customer->id);
     }
 }
