@@ -8,7 +8,15 @@
     </div>
 
     <hr>
-    <a href="/customers/{{ $customer->id }}/edit">Edit</a>
+    <div class="row">
+        <a class="btn btn-primary" href="/customers/{{ $customer->id }}/edit">Edit</a>
+
+        <form style="margin-left: 20px" action="/customers/{{ $customer->id }}" method="post">
+            @method('DELETE')
+            <button class="btn btn-danger">Delete</button>
+            @csrf
+    </form>
+    </div>
     <br>
         <div class="row">
 

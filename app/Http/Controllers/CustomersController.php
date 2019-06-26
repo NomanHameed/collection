@@ -20,7 +20,8 @@ class CustomersController extends Controller
     public function create(){
 
         $companies=Company::all();
-        return view('customers/create',compact('companies'));
+        $customer = new Customer();
+        return view('customers/create',compact('companies','customer'));
 
     }
     public function store(){
@@ -32,7 +33,9 @@ class CustomersController extends Controller
                 'company_id'=>'required'
             ]);
             Customer::create($data);
+
             return redirect('customers');
+
     }
 
     public function show(Customer $customer){
@@ -43,16 +46,23 @@ class CustomersController extends Controller
 
     public function edit(Customer $customer){
         $companies= Company::all();
-        return view('customers/edit',compact('customer','companies'));
+        return view('customers.edit',compact('customer','companies'));
     }
 
     public function update(Customer $customer){
             $data= request()->validate([
                 'name' => 'required',
-                'email'=> 'required|email'
+                'email'=> 'required|email',
+                'active'=>'required',
+                'company_id'=>'required'
             ]);
 
             $customer->update($data);
-            redirect('customers/'.$customer->id);
+            return redirect('customers/'.$customer->id);
     }
+    public function destroy(Customer $customer){
+        $customer->delete();
+        return redirect('customers');
+    }
+
 }
